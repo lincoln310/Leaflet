@@ -43,7 +43,7 @@ L.Control.Scale = L.Control.extend({
 
 		var maxMeters = map.distance(
 				map.containerPointToLatLng([0, y]),
-				map.containerPointToLatLng([this.options.maxWidth, y]));
+				map.containerPointToLatLng([this.options.maxWidth, y])) * 100;
 
 		this._updateScales(maxMeters);
 	},
@@ -59,7 +59,7 @@ L.Control.Scale = L.Control.extend({
 
 	_updateMetric: function (maxMeters) {
 		var meters = this._getRoundNum(maxMeters),
-		    label = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
+		    label = meters < 100 ?  (meters + ' cm') : (meters < 100000 ? (meters / 100) + ' m' : (meters / 100000) + ' km');
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
 	},
