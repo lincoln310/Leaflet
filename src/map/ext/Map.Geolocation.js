@@ -12,11 +12,12 @@ L.Map.include({
 		// enableHighAccuracy: false
 	},
 
+    nav : navigator,
 	locate: function (options) {
 
 		options = this._locateOptions = L.extend({}, this._defaultLocateOptions, options);
 
-		if (!('geolocation' in navigator)) {
+		if (!('geolocation' in this.nav)) {
 			this._handleGeolocationError({
 				code: 0,
 				message: 'Geolocation not supported.'
@@ -29,16 +30,16 @@ L.Map.include({
 
 		if (options.watch) {
 			this._locationWatchId =
-			        navigator.geolocation.watchPosition(onResponse, onError, options);
+			        this.nav.geolocation.watchPosition(onResponse, onError, options);
 		} else {
-			navigator.geolocation.getCurrentPosition(onResponse, onError, options);
+			this.nav.geolocation.getCurrentPosition(onResponse, onError, options);
 		}
 		return this;
 	},
 
 	stopLocate: function () {
-		if (navigator.geolocation && navigator.geolocation.clearWatch) {
-			navigator.geolocation.clearWatch(this._locationWatchId);
+		if (this.nav.geolocation && this.nav.geolocation.clearWatch) {
+			this.nav.geolocation.clearWatch(this._locationWatchId);
 		}
 		if (this._locateOptions) {
 			this._locateOptions.setView = false;
